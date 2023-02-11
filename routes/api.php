@@ -1,19 +1,27 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\PhoneController;
+use App\Http\Controllers\Client\Order\NewOrderController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::group(['prefix' => '{lang}', 'where' => ['kk|ru']], function (){
+    //register
+    Route::post('register', [AuthController::class, 'register']);
+
+    //login
+    Route::post('login/phone', [PhoneController::class, 'login']);
+
+    //verification
+    Route::post("login/phone/verification", [PhoneController::class, 'verification']);
+
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+
+        Route::group(['prefix' => 'client'], function (){
+            Route::post('create/new/order', [NewOrderController::class, 'newOrder']);
+        });
+    });
 });
