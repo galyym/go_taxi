@@ -42,7 +42,7 @@ return [
         ],
         'api' => [
             'driver' => 'passport',
-            'provider' => 'users',
+            'provider' => 'users'
         ]
     ],
 
@@ -111,5 +111,6 @@ return [
     */
 
     'password_timeout' => 10800,
+    'app_url' => env('APP_URL', 'http://localhost:8000'),
 
 ];
