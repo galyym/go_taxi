@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Services\Auth\AuthService as Service;
+use App\Services\Auth\AuthService;
 
 class AuthController extends Controller
 {
     protected $service;
-    public function __construct(Service $service){
+    public function __construct(AuthService $service){
         $this->service = $service;
     }
 
