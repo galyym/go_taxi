@@ -2,6 +2,7 @@
 
 namespace App\Services\Client\Order;
 
+use App\Events\Client\Order\OrderEvent;
 use App\Models\Order;
 use App\Http\Responders\Responder;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,8 @@ class NewOrderService
             'for_another_client' => $request->for_another_client ?? null,
             'comment' => $request->comment ?? null
         ]);
+
+        event(new OrderEvent($create));
 
         return $this->responder->success('success', $create);
     }
