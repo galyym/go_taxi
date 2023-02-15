@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Client\Order;
+namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,19 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderEvent implements ShouldBroadcast
+class ClientOrderEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $data;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($data)
+    protected $order;
+    public function __construct($order)
     {
-        $this->data = $data;
+        $this->order = $order;
     }
 
     /**
@@ -32,10 +32,11 @@ class OrderEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('orderChannel');
+//        return new PrivateChannel("id".$this->order->id."user_id".$this->order->user_id);
+        return new Channel("id".$this->order["id"]."user_id".$this->order["user_id"]);
     }
 
     public function broadcastWith(){
-        return $this->data;
+        return $this->order;
     }
 }
