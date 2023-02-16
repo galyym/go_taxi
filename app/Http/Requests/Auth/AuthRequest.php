@@ -11,7 +11,7 @@ class AuthRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,12 +21,13 @@ class AuthRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => 'email|nullable',
+            'phone_number' => 'required|string|unique:users',
+            'profile_photo' => 'nullable|mimes:jpeg,png,jpg,gif',
         ];
     }
 }

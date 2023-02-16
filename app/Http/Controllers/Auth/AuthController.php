@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\AuthRequest;
+use App\Http\Responders\Responder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\Auth\AuthService;
@@ -23,15 +25,11 @@ class AuthController extends Controller
     /**
      * Register a new user.
      * @param AuthRequest $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function register(AuthRequest $request)
     {
-        $name = $request->name;
-        $email = $request->email;
-        $password = $request->password;
-
-        return $this->service->register($name, $email, $password);
+        return $this->service->register($request->validated());
     }
 
      /**

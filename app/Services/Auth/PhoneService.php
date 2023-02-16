@@ -20,6 +20,8 @@ class PhoneService
 
     public function login($request){
 
+        $checkPhone = User::where('phone_number', $request->phone)->first();
+
         // Generate verification code
         $verification_code = rand(1000, 9999);
 
@@ -60,11 +62,14 @@ class PhoneService
 //        Redis::setex("verification_code_sent:".$request->phone, 10800, time());
 
         event(new PhoneVerificationCodeEvent($verification_code, $request->phone));
-//        \Log::debug($verification_code);
+        \Log::debug($verification_code);
 
         return $this->response->success(
             'Verification code sent to phone number',
-            ['resend_timer' => 180]
+            [
+                'resend_timer' => 180,
+                'user_status' => $checkPhone !== null,
+            ]
         );
     }
 

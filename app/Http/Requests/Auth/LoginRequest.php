@@ -24,10 +24,8 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => "required_without_all:phone|email|exists:users,email",
-            "phone" => "required_without_all:email|numeric|exists:users,phone_number",
-            "name" => "required_without_all:verification_code|string|exists:users,name",
-            "verification_code" => "required_without_all:name|string|max:4",
+            "phone" => "required|string|max:12",
+            "verification_code" => "string|max:4",
         ];
     }
 }

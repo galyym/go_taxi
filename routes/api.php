@@ -9,7 +9,7 @@ use App\Http\Controllers\Client\Order\NewOrderController;
 
 Route::group(['prefix' => '{lang}', 'where' => ['kk|ru']], function (){
     //register
-    Route::post('register', [AuthController::class, 'register']);
+    Route::post('user/register', [AuthController::class, 'register']);
 
     //login
     Route::post('login/phone', [PhoneController::class, 'login']);

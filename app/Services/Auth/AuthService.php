@@ -6,9 +6,8 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Responders\Responder;
 
 class AuthService
@@ -70,21 +69,25 @@ class AuthService
     }
 
     /**
-     * @param $name
-     * @param $email
-     * @param $password
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @param $request
+     * @return JsonResponse
      */
-    public function register($name, $email, $password) : Response{
+    public function register($request) : JsonResponse
+    {
         $user = User::create([
-            "name" => $name,
-            "email" => $email,
-            "password" => Hash::make($password),
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'phone_number' => $request['phone_number'],
+            'profile_photo' => $request['profile_photo']
         ]);
 
-        return response([
-            "user" => $user,
-        ], 200);
+        if ($user){
+            return $this->response->success("success", [
+                "user" => $user,
+            ]);
+        }else{
+            return $this->response->error('error', [], 500);
+        }
     }
 
 }
