@@ -32,7 +32,7 @@ class PhoneVerificationCodeListener
         $data = [
             'login' => (string)config('services.smsc.login'),
             'psw' => (string)config('services.smsc.password'),
-            'phones' => (string)$event->phone,
+            'phones' => (string)$event->phone_number,
             'mes' => "Ваш код: " . $event->verification_code
         ];
 

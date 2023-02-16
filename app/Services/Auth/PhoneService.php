@@ -20,7 +20,7 @@ class PhoneService
 
     public function login($request){
 
-        $checkPhone = User::where('phone_number', $request->phone)->first();
+        $checkPhone = User::where('phone_number', $request->phone_number)->first();
 
         // Generate verification code
         $verification_code = rand(1000, 9999);
@@ -58,10 +58,10 @@ class PhoneService
 //            }
 //        }
 
-        Redis::setex("verification_code:".$request->phone, 5000, $verification_code);
+        Redis::setex("verification_code:".$request->phone_number, 5000, $verification_code);
 //        Redis::setex("verification_code_sent:".$request->phone, 10800, time());
 
-        event(new PhoneVerificationCodeEvent($verification_code, $request->phone));
+        event(new PhoneVerificationCodeEvent($verification_code, $request->phone_number));
         \Log::debug($verification_code);
 
         return $this->response->success(
@@ -78,17 +78,17 @@ class PhoneService
      */
     public function verification($request){
         if($request->verification_code == "0000"){
-            $user = User::where('phone_number', $request->phone)->first();
+            $user = User::where('phone_number', $request->phone_number)->first();
             return $this->authService->token($user);
         }
-        $verification_code = Redis::get("verification_code:".$request->phone);
+        $verification_code = Redis::get("verification_code:".$request->phone_number);
 
         if ($verification_code != $request->verification_code) {
             return $this->response->error('Invalid verification code', [], 400);
         }
 
-        $user = User::where('phone_number', $request->phone)->first();
-        Redis::del("verification_code:".$request->phone);
+        $user = User::where('phone_number', $request->phone_number)->first();
+        Redis::del("verification_code:".$request->phone_number);
 
         return $this->authService->token($user);
     }

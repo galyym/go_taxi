@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            "phone" => "required|string|max:12",
+            "phone_number" => "required|string|max:12",
             "verification_code" => "string|max:4",
         ];
     }
