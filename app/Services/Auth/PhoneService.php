@@ -68,7 +68,7 @@ class PhoneService
             'Verification code sent to phone number',
             [
                 'resend_timer' => 180,
-                'user_status' => $checkPhone !== null,
+                'user_status' => $checkPhone,
             ]
         );
     }
@@ -79,6 +79,12 @@ class PhoneService
     public function verification($request){
         if($request->verification_code == "0000"){
             $user = User::where('phone_number', $request->phone_number)->first();
+            if (!$user){
+                $user = User::create([
+                    "phone_number" => $request->phone_number
+                ]);
+            }
+
             return $this->authService->token($user);
         }
         $verification_code = Redis::get("verification_code:".$request->phone_number);
@@ -88,6 +94,9 @@ class PhoneService
         }
 
         $user = User::where('phone_number', $request->phone_number)->first();
+
+
+
         Redis::del("verification_code:".$request->phone_number);
 
         return $this->authService->token($user);
