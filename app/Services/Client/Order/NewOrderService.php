@@ -6,7 +6,11 @@ use App\Events\Client\Order\OrderEvent;
 use App\Events\ClientOrderEvent;
 use App\Models\Order;
 use App\Http\Responders\Responder;
+use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
+use Illuminate\Broadcasting\Broadcasters\UsePusherChannelConventions;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Log;
 
 class NewOrderService
 {
@@ -40,6 +44,10 @@ class NewOrderService
 
     public function selectOrders($request){
         ClientOrderEvent::dispatch($request);
+
+        $driver =  Broadcast::connection();
+
         return $this->responder->success("success", $request);
     }
+
 }

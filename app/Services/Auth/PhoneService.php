@@ -59,8 +59,8 @@ class PhoneService
         Redis::setex("verification_code:".$request->phone, 5000, $verification_code);
 //        Redis::setex("verification_code_sent:".$request->phone, 10800, time());
 
-//        event(new PhoneVerificationCodeEvent($verification_code, $request->phone));
-        \Log::debug($verification_code);
+        event(new PhoneVerificationCodeEvent($verification_code, $request->phone));
+//        \Log::debug($verification_code);
 
         return $this->response->success(
             'Verification code sent to phone number',
