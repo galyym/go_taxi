@@ -85,7 +85,9 @@ class PhoneService
                 ]);
             }
 
-            return $this->authService->token($user);
+            $token =  $this->authService->token($user);
+            $token += ["user" => $user];
+            return $token;
         }
         $verification_code = Redis::get("verification_code:".$request->phone_number);
 
@@ -99,6 +101,8 @@ class PhoneService
 
         Redis::del("verification_code:".$request->phone_number);
 
-        return $this->authService->token($user);
+        $token =  $this->authService->token($user);
+        $token += ["user" => $user];
+        return $token;
     }
 }
