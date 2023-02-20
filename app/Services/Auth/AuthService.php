@@ -79,7 +79,7 @@ class AuthService
 
         $user = User::create([
             'name' => $request['name'],
-            'email' => $request['email'],
+            'email' => array_key_exists('email', $request) ? $request['email'] : null,
             'phone_number' => $request['phone_number'],
             'profile_photo' => $profile_photo
         ]);
