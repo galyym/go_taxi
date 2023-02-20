@@ -3,6 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Models\User;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -74,11 +75,13 @@ class AuthService
      */
     public function register($request) : JsonResponse
     {
+        $profile_photo = $request['profile_photo']->store('profile_photo/'.Carbon::now()->format('Y')."/".Carbon::now()->format('m')."/".Carbon::now()->format('d'));
+
         $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'phone_number' => $request['phone_number'],
-            'profile_photo' => $request['profile_photo']
+            'profile_photo' => $profile_photo
         ]);
 
         if ($user){
