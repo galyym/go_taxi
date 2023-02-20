@@ -26,7 +26,8 @@ class AuthRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'email|nullable',
-            'phone_number' => 'required|string|unique:users',
+            'phone_number' => 'required|string',
+//            'phone_number' => 'required|string|unique:users',
             'profile_photo' => 'nullable|mimes:jpeg,png,jpg,gif',
         ];
     }
