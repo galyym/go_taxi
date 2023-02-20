@@ -77,12 +77,12 @@ class AuthService
     {
         $profile_photo = $request['profile_photo']->store('profile_photo/'.Carbon::now()->format('Y')."/".Carbon::now()->format('m')."/".Carbon::now()->format('d'));
 
-        $user = User::create([
+        $user = User::upsert([
             'name' => $request['name'],
             'email' => array_key_exists('email', $request) ? $request['email'] : null,
             'phone_number' => $request['phone_number'],
             'profile_photo' => $profile_photo
-        ]);
+        ], 'phone_number');
 
         if ($user){
             return $this->response->success("success", [
