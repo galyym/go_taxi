@@ -75,18 +75,21 @@ class AuthService
      */
     public function register($request) : JsonResponse
     {
-        $profile_photo = $request['profile_photo']->store('profile_photo/'.Carbon::now()->format('Y')."/".Carbon::now()->format('m')."/".Carbon::now()->format('d'));
+        $profile_photo = array_key_exists('profile_photo', $request) ? $request['profile_photo']->store('profile_photo/'.Carbon::now()->format('Y')."/".Carbon::now()->format('m')."/".Carbon::now()->format('d'), 'public') : null;
 
-        $user = User::upsert([
+        $user_info = [
             'name' => $request['name'],
             'email' => array_key_exists('email', $request) ? $request['email'] : null,
             'phone_number' => $request['phone_number'],
-            'profile_photo' => $profile_photo
-        ], 'phone_number');
+            'profile_photo' => array_key_exists('profile_photo', $request) ? config('auth.app_url').'/app/public/'.$profile_photo : null,
+        ];
+
+        $user = User::upsert($user_info, 'phone_number');
 
         if ($user){
             return $this->response->success("success", [
-                "user" => $user,
+                "update" => $user,
+                "user" => $user_info
             ]);
         }else{
             return $this->response->error('error', [], 500);
