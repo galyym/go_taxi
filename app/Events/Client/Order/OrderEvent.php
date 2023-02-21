@@ -32,7 +32,7 @@ class OrderEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('orderChannel');
+        return new Channel('orderChannel');
     }
 
     public function broadcastAs(){
