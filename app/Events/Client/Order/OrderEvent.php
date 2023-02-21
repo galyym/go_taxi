@@ -35,6 +35,9 @@ class OrderEvent implements ShouldBroadcast
         return new PrivateChannel('orderChannel');
     }
 
+    public function broadcastAs(){
+        return 'order';
+    }
     public function broadcastWith(){
         return $this->data;
     }
