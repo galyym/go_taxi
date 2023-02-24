@@ -2,11 +2,21 @@
 
 namespace App\Http\Responders;
 
+use Illuminate\Http\JsonResponse;
+
 class Responder
 {
     public function __construct()
     {
     }
+
+    /**
+     * @param $success
+     * @param $message
+     * @param $data
+     * @param $statusCode
+     * @return JsonResponse
+     */
     private function respond($success, $message, $data = [], $statusCode)
     {
         return response()->json([
@@ -15,7 +25,7 @@ class Responder
             "data" => $data
         ], $statusCode);
     }
-    public function success($message = null, $data = [] , $statusCode = 200)
+    public function success($message = null, $data = [], $statusCode = 200)
     {
         return $this->respond(true, $message, $data, $statusCode);
     }

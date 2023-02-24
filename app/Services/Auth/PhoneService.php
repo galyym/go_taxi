@@ -7,7 +7,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Responders\Responder;
 use App\Models\User;
-use App\Services\Auth\AuthService;
 
 class PhoneService
 {
@@ -76,12 +75,12 @@ class PhoneService
     /**
      * @throws GuzzleException
      */
-    public function verification($request){
-        if($request->verification_code == "0000"){
-            $user = User::where('phone_number', $request->phone_number)->first();
+    public function verification(array $request){
+        if($request["verification_code"] === "0000"){
+            $user = User::where('phone_number', $request["phone_number"])->first();
             if (!$user){
                 $user = User::create([
-                    "phone_number" => $request->phone_number
+                    "phone_number" => $request["phone_number"]
                 ]);
             }
 
@@ -89,17 +88,17 @@ class PhoneService
             $token += ["user" => $user];
             return $token;
         }
-        $verification_code = Redis::get("verification_code:".$request->phone_number);
+        $verification_code = Redis::get("verification_code:".$request["phone_number"]);
 
-        if ($verification_code != $request->verification_code) {
+        if ($verification_code !== $request["verification_code"]) {
             return $this->response->error('Invalid verification code', [], 400);
         }
 
-        $user = User::where('phone_number', $request->phone_number)->first();
+        $user = User::where('phone_number', $request["phone_number"])->first();
 
 
 
-        Redis::del("verification_code:".$request->phone_number);
+        Redis::del("verification_code:".$request["phone_number"]);
 
         $token =  $this->authService->token($user);
         $token += ["user" => $user];

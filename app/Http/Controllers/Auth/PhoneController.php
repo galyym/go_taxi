@@ -23,6 +23,6 @@ class PhoneController extends Controller
      * @throws GuzzleException
      */
     public function verification(LoginRequest $request){
-        return $this->service->verification($request);
+        return $this->service->verification($request->validated());
     }
 }

@@ -19,7 +19,7 @@ class NewOrderService
         $this->responder = $responder;
     }
 
-    public function newOrder($request): \Illuminate\Http\JsonResponse
+    public function newOrder(array $request): \Illuminate\Http\JsonResponse
     {
         $create = Order::create([
             'from_address' => $request["from_address"],

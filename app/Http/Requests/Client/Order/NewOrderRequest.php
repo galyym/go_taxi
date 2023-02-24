@@ -29,9 +29,9 @@ class NewOrderRequest extends FormRequest
             "price" => "required|min:1",
             "departure_time" => "date|nullable",
             "passenger_count" => "nullable",
-            "salon" => "nullable",
-            "round_trip" => "nullable",
-            "luggage" => "nullable",
+            "salon" => "nullable|boolean",
+            "round_trip" => "nullable|boolean",
+            "luggage" => "nullable|boolean",
             "for_another_client" => "nullable",
             "comment" => "nullable"
         ];

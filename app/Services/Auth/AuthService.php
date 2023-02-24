@@ -54,7 +54,7 @@ class AuthService
         $client = DB::table('oauth_clients')->select('id', 'secret')->where('id', '=', 2)->first();
 
         try {
-            $response = $http->request('POST',config("auth.app_url").'/oauth/token', [
+            $response = $http->request('POST', config("auth.app_url").'/oauth/token', [
                 'form_params' => [
                     'grant_type'    => 'refresh_token',
                     'refresh_token' => $refreshToken,
@@ -91,9 +91,8 @@ class AuthService
                 "update" => $user,
                 "user" => $user_info
             ]);
-        }else{
-            return $this->response->error('error', [], 500);
         }
+        return $this->response->error('error', [], 500);
     }
 
 }
