@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Http\Controllers\Reference\CityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\PhoneController;
@@ -24,6 +25,10 @@ Route::group(['prefix' => '{lang}', 'where' => ['kk|ru']], function (){
         Route::group(['prefix' => 'client'], function (){
             Route::post('create/new/order', [NewOrderController::class, 'newOrder']);
             Route::post('select/order', [NewOrderController::class, 'selectOrder']);
+        });
+
+        Route::group(['prefix' => 'reference'], function (){
+            Route::get('/cities', [CityController::class, 'index']);
         });
     });
 });
