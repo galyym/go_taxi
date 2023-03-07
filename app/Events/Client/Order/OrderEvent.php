@@ -14,15 +14,15 @@ class OrderEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    protected $data;
+    protected $order;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($order)
     {
-        $this->data = $data;
+        $this->order = $order;
     }
 
     /**
@@ -32,13 +32,13 @@ class OrderEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('orderChannel');
+        return new Channel($this->order["from_city_id"] . " newOrders");
     }
 
     public function broadcastAs(){
-        return 'order';
+        return 'newOrders';
     }
     public function broadcastWith(){
-        return $this->data;
+        return $this->order;
     }
 }

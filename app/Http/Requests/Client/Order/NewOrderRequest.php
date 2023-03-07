@@ -24,16 +24,17 @@ class NewOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            "from_address" => "required|max:255",
-            "to_address" => "required|max:255",
+            "from_address" => "string|max:255",
+            "to_address" => "string|max:255",
             "price" => "required|min:1",
             "departure_time" => "date|nullable",
             "passenger_count" => "nullable",
             "salon" => "nullable|boolean",
             "round_trip" => "nullable|boolean",
             "luggage" => "nullable|boolean",
-            "for_another_client" => "nullable",
-            "comment" => "nullable"
+            "comment" => "nullable",
+            "from_city_id" => "required|exists:cities, city_id",
+            "to_city_id" => "required|exists:cities, id"
         ];
     }
 }

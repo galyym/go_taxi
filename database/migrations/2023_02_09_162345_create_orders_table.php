@@ -24,8 +24,9 @@ class CreateOrdersTable extends Migration
             $table->boolean('salon')->nullable();
             $table->boolean('round_trip')->nullable();
             $table->boolean('luggage')->nullable();
-            $table->string('for_another_client')->nullable();
             $table->text('comment')->nullable();
+            $table->integer('from_city_id')->nullable();
+            $table->integer('to_city_id')->nullable();
             $table->timestamps();
         });
     }

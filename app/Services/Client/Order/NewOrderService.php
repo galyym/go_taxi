@@ -31,8 +31,9 @@ class NewOrderService
             'salon' => $request["salon"] ?? null,
             'round_trip' => $request["round_trip"] ?? null,
             'luggage' => $request["luggage"] ?? null,
-            'for_another_client' => $request["for_another_client"] ?? null,
-            'comment' => $request["comment"] ?? null
+            'comment' => $request["comment"] ?? null,
+            'from_city_id' => $request["from_city_id"] ?? null,
+            'to_city_id' => $request["to_city_id"] ?? null
         ])->toArray();
 
         OrderEvent::dispatch($create);
