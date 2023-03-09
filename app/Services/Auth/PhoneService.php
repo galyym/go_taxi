@@ -61,7 +61,6 @@ class PhoneService
 //        Redis::setex("verification_code_sent:".$request->phone, 10800, time());
 
         event(new PhoneVerificationCodeEvent($verification_code, $request->phone_number));
-        \Log::debug($verification_code);
 
         return $this->response->success(
             'Verification code sent to phone number',
@@ -80,7 +79,8 @@ class PhoneService
             $user = User::where('phone_number', $request["phone_number"])->first();
             if (!$user){
                 $user = User::create([
-                    "phone_number" => $request["phone_number"]
+                    "phone_number" => $request["phone_number"],
+                    "name" => 'Temp User'
                 ]);
             }
 
@@ -95,8 +95,6 @@ class PhoneService
         }
 
         $user = User::where('phone_number', $request["phone_number"])->first();
-
-
 
         Redis::del("verification_code:".$request["phone_number"]);
 
