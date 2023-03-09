@@ -6,6 +6,7 @@ use App\Events\Client\Order\OrderEvent;
 use App\Events\ClientOrderEvent;
 use App\Models\Order;
 use App\Http\Responders\Responder;
+use App\Models\Reference\City;
 use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\UsePusherChannelConventions;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +37,9 @@ class NewOrderService
             'to_city_id' => $request["to_city_id"] ?? null
         ])->toArray();
 
-        OrderEvent::dispatch($create);
+        $city = City::find($request["from_city_id"])->name_en;
+
+        OrderEvent::dispatch($create, $city);
         ClientOrderEvent::dispatch($create);
 
         return $this->responder->success('success', $create);
