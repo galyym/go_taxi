@@ -24,8 +24,8 @@ class NewOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            "from_address" => "string|max:255",
-            "to_address" => "string|max:255",
+            "from_address" => "nullable|string|max:255",
+            "to_address" => "nullable|string|max:255",
             "price" => "required|min:1",
             "departure_time" => "date|nullable",
             "passenger_count" => "nullable",
