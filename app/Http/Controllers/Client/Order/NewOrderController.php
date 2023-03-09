@@ -24,4 +24,8 @@ class NewOrderController extends Controller
     public function selectOrder(SelectOrderRequest $request){
         return $this->service->selectOrders($request->validated());
     }
+
+    public function show($lang, $id){
+        return $this->service->show($id);
+    }
 }

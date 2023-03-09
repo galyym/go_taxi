@@ -24,6 +24,8 @@ Route::group(['prefix' => '{lang}', 'where' => ['kk|ru']], function (){
 
         Route::group(['prefix' => 'client'], function (){
             Route::post('create/new/order', [NewOrderController::class, 'newOrder']);
+            Route::get('order/{id}', [NewOrderController::class, 'show']);
+
             Route::post('select/order', [NewOrderController::class, 'selectOrder']);
         });
 

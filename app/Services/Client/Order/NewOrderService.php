@@ -54,4 +54,13 @@ class NewOrderService
         return $this->responder->success("success", $request);
     }
 
+    public function show($id): \Illuminate\Http\JsonResponse {
+        $order = Order::find($id);
+
+        if ($order){
+            return $this->responder->success('success', $order);
+        }
+        return $this->responder->error('error', 'Order not found');
+    }
+
 }
