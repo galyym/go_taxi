@@ -71,9 +71,8 @@ class AuthService
 
     /**
      * @param $request
-     * @return JsonResponse
      */
-    public function register($request) : JsonResponse
+    public function register($request)
     {
         $profile_photo = array_key_exists('profile_photo', $request) ? $request['profile_photo']->store('profile_photo/'.Carbon::now()->format('Y')."/".Carbon::now()->format('m')."/".Carbon::now()->format('d'), 'public') : null;
 
@@ -86,7 +85,6 @@ class AuthService
 
         $user = User::updateOrCreate($user_info, ['phone_number'])->first();
         if ($user){
-
             $token = $this->token($user);
             $token += ['user' => $user_info];
             return $token;

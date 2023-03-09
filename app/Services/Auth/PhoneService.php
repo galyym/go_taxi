@@ -86,7 +86,6 @@ class PhoneService
             }
 
             $token =  $this->authService->token($user);
-            $token += ["user" => "User not found"];
             return $token;
         }
         $verification_code = Redis::get("verification_code:".$request["phone_number"]);
