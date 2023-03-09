@@ -84,13 +84,12 @@ class AuthService
             'profile_photo' => array_key_exists('profile_photo', $request) ? config('auth.app_url').'/app/public/'.$profile_photo : null,
         ];
 
-        $user = User::upsert($user_info, 'phone_number');
-
+        $user = User::updateOrCreate($user_info, ['phone_number'])->first();
         if ($user){
-            return $this->response->success("success", [
-                "update" => $user,
-                "user" => $user_info
-            ]);
+
+            $token = $this->token($user);
+            $token += ['user' => $user_info];
+            return $token;
         }
         return $this->response->error('error', [], 500);
     }
