@@ -78,14 +78,15 @@ class PhoneService
         if($request["verification_code"] === "0000"){
             $user = User::where('phone_number', $request["phone_number"])->first();
             if (!$user){
-                $user = User::create([
-                    "phone_number" => $request["phone_number"],
-                    "name" => 'Temp User'
-                ]);
+//                $user = User::create([
+//                    "phone_number" => $request["phone_number"],
+//                    "name" => 'Temp User'
+//                ]);
+                return ["user" => "User not found"];
             }
 
             $token =  $this->authService->token($user);
-            $token += ["user" => $user];
+            $token += ["user" => "User not found"];
             return $token;
         }
         $verification_code = Redis::get("verification_code:".$request["phone_number"]);
