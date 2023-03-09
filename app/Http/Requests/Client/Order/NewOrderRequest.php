@@ -33,7 +33,7 @@ class NewOrderRequest extends FormRequest
             "round_trip" => "nullable|boolean",
             "luggage" => "nullable|boolean",
             "comment" => "nullable",
-            "from_city_id" => "required|exists:cities, city_id",
+            "from_city_id" => "required|exists:cities, id",
             "to_city_id" => "required|exists:cities, id"
         ];
     }
