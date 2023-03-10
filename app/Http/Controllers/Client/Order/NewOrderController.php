@@ -21,11 +21,19 @@ class NewOrderController extends Controller
         return $this->service->newOrder($request->validated());
     }
 
-    public function selectOrder(SelectOrderRequest $request){
-        return $this->service->selectOrders($request->validated());
+    public function updateOrder(NewOrderRequest $request, $lang, $id){
+        return $this->service->updateOrder($id, $request->validated());
+    }
+
+    public function deleteOrder($lang, $id){
+        return $this->service->deleteOrder($id);
     }
 
     public function show($lang, $id){
         return $this->service->show($id);
+    }
+
+    public function selectOrder(SelectOrderRequest $request){
+        return $this->service->selectOrders($request->validated());
     }
 }

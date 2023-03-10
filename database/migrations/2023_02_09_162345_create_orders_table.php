@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->text('comment')->nullable();
             $table->integer('from_city_id')->nullable();
             $table->integer('to_city_id')->nullable();
+            $table->integer('order_status_id')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Services\Client\Order;
 
 use App\Events\Client\Order\OrderEvent;
 use App\Events\ClientOrderEvent;
+use App\Models\Client\CompletedOrder;
 use App\Models\Order;
 use App\Http\Responders\Responder;
 use App\Models\Reference\City;
@@ -11,6 +12,7 @@ use Illuminate\Broadcasting\Broadcasters\PusherBroadcaster;
 use Illuminate\Broadcasting\Broadcasters\UsePusherChannelConventions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class NewOrderService
@@ -34,15 +36,57 @@ class NewOrderService
             'luggage' => $request["luggage"] ?? null,
             'comment' => $request["comment"] ?? null,
             'from_city_id' => $request["from_city_id"] ?? null,
-            'to_city_id' => $request["to_city_id"] ?? null
+            'to_city_id' => $request["to_city_id"] ?? null,
+            'order_status_id' => 1
         ])->toArray();
 
-        $city = City::find($request["from_city_id"])->name_en;
+        $city_id = City::find($request["from_city_id"])->id;
 
-        OrderEvent::dispatch($create, $city);
+
+        OrderEvent::dispatch($create, $city_id);
         ClientOrderEvent::dispatch($create);
 
         return $this->responder->success('success', $create);
+    }
+
+    public function updateOrder($id, array $request): \Illuminate\Http\JsonResponse {
+
+        $request += ["order_status_id" => 2];
+        $order = Order::find($id);
+        $query = $order->update($request);
+        if ($query) {
+            $city_id = City::find($request["from_city_id"])->id;
+            OrderEvent::dispatch($order->toArray(), $city_id);
+            return $this->responder->success('success', $order);
+        }
+        return $this->responder->error("error", "Order not found or not updated");
+    }
+
+    public function deleteOrder($id): \Illuminate\Http\JsonResponse {
+        $order = Order::find($id);
+        if (!$order) {
+            return $this->responder->error("error", "Order not found or not deleted");
+        }
+
+        $exception = DB::transaction(function () use ($order) {
+            try {
+                CompletedOrder::create($order->toArray());
+                $order->delete();
+                return true;
+            }catch (\Exception $e){
+                return false;
+            }
+        });
+
+        if ($exception) {
+            $city_id = City::find($order->from_city_id)->id;
+            OrderEvent::dispatch([
+                "id" => $id,
+                "order_status_id" => 3
+            ], $city_id);
+            return $this->responder->success("success", $exception);
+        }
+        return $this->responder->error("error", "Order not found or not deleted");
     }
 
 

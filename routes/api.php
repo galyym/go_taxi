@@ -23,10 +23,16 @@ Route::group(['prefix' => '{lang}', 'where' => ['kk|ru']], function (){
         Route::post('logout', [AuthController::class, 'logout']);
 
         Route::group(['prefix' => 'client'], function (){
-            Route::post('create/new/order', [NewOrderController::class, 'newOrder']);
-            Route::get('order/{id}', [NewOrderController::class, 'show']);
+            Route::group(['prefix' => 'new/order'], function (){
+                Route::post('create', [NewOrderController::class, 'newOrder']); // создать заказа
+                Route::post('{id}/update', [NewOrderController::class, 'updateOrder']); // обновить заказ
+                Route::delete('{id}/delete', [NewOrderController::class, 'deleteOrder']); // удалить заказ
 
-            Route::post('select/order', [NewOrderController::class, 'selectOrder']);
+                Route::get('{id}', [NewOrderController::class, 'show']); // выбрать заказ для показа на мобильке
+
+                Route::post('select/order', [NewOrderController::class, 'selectOrder']); // выбрать заказ водителем для отправки предложение
+                Route::post('select/driver', [NewOrderController::class, 'selectOrder']); // выбор водителя клиентом
+            });
         });
 
         Route::group(['prefix' => 'reference'], function (){

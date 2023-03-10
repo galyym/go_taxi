@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Client;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @mixin \Illuminate\Database\Eloquent\Builder
+ * @mixin Builder
  */
-class Order extends Model
+class CompletedOrder extends Model
 {
     use HasFactory;
 
